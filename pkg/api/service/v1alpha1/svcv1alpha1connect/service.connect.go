@@ -55,9 +55,6 @@ const (
 	// KargoServiceDeleteResourceProcedure is the fully-qualified name of the KargoService's
 	// DeleteResource RPC.
 	KargoServiceDeleteResourceProcedure = "/akuity.io.kargo.service.v1alpha1.KargoService/DeleteResource"
-	// KargoServiceCreateStageProcedure is the fully-qualified name of the KargoService's CreateStage
-	// RPC.
-	KargoServiceCreateStageProcedure = "/akuity.io.kargo.service.v1alpha1.KargoService/CreateStage"
 	// KargoServiceListStagesProcedure is the fully-qualified name of the KargoService's ListStages RPC.
 	KargoServiceListStagesProcedure = "/akuity.io.kargo.service.v1alpha1.KargoService/ListStages"
 	// KargoServiceGetStageProcedure is the fully-qualified name of the KargoService's GetStage RPC.
@@ -92,9 +89,6 @@ const (
 	// KargoServiceWatchPromotionProcedure is the fully-qualified name of the KargoService's
 	// WatchPromotion RPC.
 	KargoServiceWatchPromotionProcedure = "/akuity.io.kargo.service.v1alpha1.KargoService/WatchPromotion"
-	// KargoServiceCreateProjectProcedure is the fully-qualified name of the KargoService's
-	// CreateProject RPC.
-	KargoServiceCreateProjectProcedure = "/akuity.io.kargo.service.v1alpha1.KargoService/CreateProject"
 	// KargoServiceListProjectsProcedure is the fully-qualified name of the KargoService's ListProjects
 	// RPC.
 	KargoServiceListProjectsProcedure = "/akuity.io.kargo.service.v1alpha1.KargoService/ListProjects"
@@ -151,7 +145,6 @@ type KargoServiceClient interface {
 	CreateOrUpdateResource(context.Context, *connect.Request[v1alpha1.CreateOrUpdateResourceRequest]) (*connect.Response[v1alpha1.CreateOrUpdateResourceResponse], error)
 	UpdateResource(context.Context, *connect.Request[v1alpha1.UpdateResourceRequest]) (*connect.Response[v1alpha1.UpdateResourceResponse], error)
 	DeleteResource(context.Context, *connect.Request[v1alpha1.DeleteResourceRequest]) (*connect.Response[v1alpha1.DeleteResourceResponse], error)
-	CreateStage(context.Context, *connect.Request[v1alpha1.CreateStageRequest]) (*connect.Response[v1alpha1.CreateStageResponse], error)
 	ListStages(context.Context, *connect.Request[v1alpha1.ListStagesRequest]) (*connect.Response[v1alpha1.ListStagesResponse], error)
 	GetStage(context.Context, *connect.Request[v1alpha1.GetStageRequest]) (*connect.Response[v1alpha1.GetStageResponse], error)
 	WatchStages(context.Context, *connect.Request[v1alpha1.WatchStagesRequest]) (*connect.ServerStreamForClient[v1alpha1.WatchStagesResponse], error)
@@ -165,7 +158,6 @@ type KargoServiceClient interface {
 	WatchPromotions(context.Context, *connect.Request[v1alpha1.WatchPromotionsRequest]) (*connect.ServerStreamForClient[v1alpha1.WatchPromotionsResponse], error)
 	GetPromotion(context.Context, *connect.Request[v1alpha1.GetPromotionRequest]) (*connect.Response[v1alpha1.GetPromotionResponse], error)
 	WatchPromotion(context.Context, *connect.Request[v1alpha1.WatchPromotionRequest]) (*connect.ServerStreamForClient[v1alpha1.WatchPromotionResponse], error)
-	CreateProject(context.Context, *connect.Request[v1alpha1.CreateProjectRequest]) (*connect.Response[v1alpha1.CreateProjectResponse], error)
 	ListProjects(context.Context, *connect.Request[v1alpha1.ListProjectsRequest]) (*connect.Response[v1alpha1.ListProjectsResponse], error)
 	DeleteProject(context.Context, *connect.Request[v1alpha1.DeleteProjectRequest]) (*connect.Response[v1alpha1.DeleteProjectResponse], error)
 	SetAutoPromotionForStage(context.Context, *connect.Request[v1alpha1.SetAutoPromotionForStageRequest]) (*connect.Response[v1alpha1.SetAutoPromotionForStageResponse], error)
@@ -232,11 +224,6 @@ func NewKargoServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			baseURL+KargoServiceDeleteResourceProcedure,
 			opts...,
 		),
-		createStage: connect.NewClient[v1alpha1.CreateStageRequest, v1alpha1.CreateStageResponse](
-			httpClient,
-			baseURL+KargoServiceCreateStageProcedure,
-			opts...,
-		),
 		listStages: connect.NewClient[v1alpha1.ListStagesRequest, v1alpha1.ListStagesResponse](
 			httpClient,
 			baseURL+KargoServiceListStagesProcedure,
@@ -295,11 +282,6 @@ func NewKargoServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 		watchPromotion: connect.NewClient[v1alpha1.WatchPromotionRequest, v1alpha1.WatchPromotionResponse](
 			httpClient,
 			baseURL+KargoServiceWatchPromotionProcedure,
-			opts...,
-		),
-		createProject: connect.NewClient[v1alpha1.CreateProjectRequest, v1alpha1.CreateProjectResponse](
-			httpClient,
-			baseURL+KargoServiceCreateProjectProcedure,
 			opts...,
 		),
 		listProjects: connect.NewClient[v1alpha1.ListProjectsRequest, v1alpha1.ListProjectsResponse](
@@ -385,7 +367,6 @@ type kargoServiceClient struct {
 	createOrUpdateResource   *connect.Client[v1alpha1.CreateOrUpdateResourceRequest, v1alpha1.CreateOrUpdateResourceResponse]
 	updateResource           *connect.Client[v1alpha1.UpdateResourceRequest, v1alpha1.UpdateResourceResponse]
 	deleteResource           *connect.Client[v1alpha1.DeleteResourceRequest, v1alpha1.DeleteResourceResponse]
-	createStage              *connect.Client[v1alpha1.CreateStageRequest, v1alpha1.CreateStageResponse]
 	listStages               *connect.Client[v1alpha1.ListStagesRequest, v1alpha1.ListStagesResponse]
 	getStage                 *connect.Client[v1alpha1.GetStageRequest, v1alpha1.GetStageResponse]
 	watchStages              *connect.Client[v1alpha1.WatchStagesRequest, v1alpha1.WatchStagesResponse]
@@ -398,7 +379,6 @@ type kargoServiceClient struct {
 	watchPromotions          *connect.Client[v1alpha1.WatchPromotionsRequest, v1alpha1.WatchPromotionsResponse]
 	getPromotion             *connect.Client[v1alpha1.GetPromotionRequest, v1alpha1.GetPromotionResponse]
 	watchPromotion           *connect.Client[v1alpha1.WatchPromotionRequest, v1alpha1.WatchPromotionResponse]
-	createProject            *connect.Client[v1alpha1.CreateProjectRequest, v1alpha1.CreateProjectResponse]
 	listProjects             *connect.Client[v1alpha1.ListProjectsRequest, v1alpha1.ListProjectsResponse]
 	deleteProject            *connect.Client[v1alpha1.DeleteProjectRequest, v1alpha1.DeleteProjectResponse]
 	setAutoPromotionForStage *connect.Client[v1alpha1.SetAutoPromotionForStageRequest, v1alpha1.SetAutoPromotionForStageResponse]
@@ -454,11 +434,6 @@ func (c *kargoServiceClient) UpdateResource(ctx context.Context, req *connect.Re
 // DeleteResource calls akuity.io.kargo.service.v1alpha1.KargoService.DeleteResource.
 func (c *kargoServiceClient) DeleteResource(ctx context.Context, req *connect.Request[v1alpha1.DeleteResourceRequest]) (*connect.Response[v1alpha1.DeleteResourceResponse], error) {
 	return c.deleteResource.CallUnary(ctx, req)
-}
-
-// CreateStage calls akuity.io.kargo.service.v1alpha1.KargoService.CreateStage.
-func (c *kargoServiceClient) CreateStage(ctx context.Context, req *connect.Request[v1alpha1.CreateStageRequest]) (*connect.Response[v1alpha1.CreateStageResponse], error) {
-	return c.createStage.CallUnary(ctx, req)
 }
 
 // ListStages calls akuity.io.kargo.service.v1alpha1.KargoService.ListStages.
@@ -519,11 +494,6 @@ func (c *kargoServiceClient) GetPromotion(ctx context.Context, req *connect.Requ
 // WatchPromotion calls akuity.io.kargo.service.v1alpha1.KargoService.WatchPromotion.
 func (c *kargoServiceClient) WatchPromotion(ctx context.Context, req *connect.Request[v1alpha1.WatchPromotionRequest]) (*connect.ServerStreamForClient[v1alpha1.WatchPromotionResponse], error) {
 	return c.watchPromotion.CallServerStream(ctx, req)
-}
-
-// CreateProject calls akuity.io.kargo.service.v1alpha1.KargoService.CreateProject.
-func (c *kargoServiceClient) CreateProject(ctx context.Context, req *connect.Request[v1alpha1.CreateProjectRequest]) (*connect.Response[v1alpha1.CreateProjectResponse], error) {
-	return c.createProject.CallUnary(ctx, req)
 }
 
 // ListProjects calls akuity.io.kargo.service.v1alpha1.KargoService.ListProjects.
@@ -610,7 +580,6 @@ type KargoServiceHandler interface {
 	CreateOrUpdateResource(context.Context, *connect.Request[v1alpha1.CreateOrUpdateResourceRequest]) (*connect.Response[v1alpha1.CreateOrUpdateResourceResponse], error)
 	UpdateResource(context.Context, *connect.Request[v1alpha1.UpdateResourceRequest]) (*connect.Response[v1alpha1.UpdateResourceResponse], error)
 	DeleteResource(context.Context, *connect.Request[v1alpha1.DeleteResourceRequest]) (*connect.Response[v1alpha1.DeleteResourceResponse], error)
-	CreateStage(context.Context, *connect.Request[v1alpha1.CreateStageRequest]) (*connect.Response[v1alpha1.CreateStageResponse], error)
 	ListStages(context.Context, *connect.Request[v1alpha1.ListStagesRequest]) (*connect.Response[v1alpha1.ListStagesResponse], error)
 	GetStage(context.Context, *connect.Request[v1alpha1.GetStageRequest]) (*connect.Response[v1alpha1.GetStageResponse], error)
 	WatchStages(context.Context, *connect.Request[v1alpha1.WatchStagesRequest], *connect.ServerStream[v1alpha1.WatchStagesResponse]) error
@@ -624,7 +593,6 @@ type KargoServiceHandler interface {
 	WatchPromotions(context.Context, *connect.Request[v1alpha1.WatchPromotionsRequest], *connect.ServerStream[v1alpha1.WatchPromotionsResponse]) error
 	GetPromotion(context.Context, *connect.Request[v1alpha1.GetPromotionRequest]) (*connect.Response[v1alpha1.GetPromotionResponse], error)
 	WatchPromotion(context.Context, *connect.Request[v1alpha1.WatchPromotionRequest], *connect.ServerStream[v1alpha1.WatchPromotionResponse]) error
-	CreateProject(context.Context, *connect.Request[v1alpha1.CreateProjectRequest]) (*connect.Response[v1alpha1.CreateProjectResponse], error)
 	ListProjects(context.Context, *connect.Request[v1alpha1.ListProjectsRequest]) (*connect.Response[v1alpha1.ListProjectsResponse], error)
 	DeleteProject(context.Context, *connect.Request[v1alpha1.DeleteProjectRequest]) (*connect.Response[v1alpha1.DeleteProjectResponse], error)
 	SetAutoPromotionForStage(context.Context, *connect.Request[v1alpha1.SetAutoPromotionForStageRequest]) (*connect.Response[v1alpha1.SetAutoPromotionForStageResponse], error)
@@ -687,11 +655,6 @@ func NewKargoServiceHandler(svc KargoServiceHandler, opts ...connect.HandlerOpti
 		svc.DeleteResource,
 		opts...,
 	)
-	kargoServiceCreateStageHandler := connect.NewUnaryHandler(
-		KargoServiceCreateStageProcedure,
-		svc.CreateStage,
-		opts...,
-	)
 	kargoServiceListStagesHandler := connect.NewUnaryHandler(
 		KargoServiceListStagesProcedure,
 		svc.ListStages,
@@ -750,11 +713,6 @@ func NewKargoServiceHandler(svc KargoServiceHandler, opts ...connect.HandlerOpti
 	kargoServiceWatchPromotionHandler := connect.NewServerStreamHandler(
 		KargoServiceWatchPromotionProcedure,
 		svc.WatchPromotion,
-		opts...,
-	)
-	kargoServiceCreateProjectHandler := connect.NewUnaryHandler(
-		KargoServiceCreateProjectProcedure,
-		svc.CreateProject,
 		opts...,
 	)
 	kargoServiceListProjectsHandler := connect.NewUnaryHandler(
@@ -845,8 +803,6 @@ func NewKargoServiceHandler(svc KargoServiceHandler, opts ...connect.HandlerOpti
 			kargoServiceUpdateResourceHandler.ServeHTTP(w, r)
 		case KargoServiceDeleteResourceProcedure:
 			kargoServiceDeleteResourceHandler.ServeHTTP(w, r)
-		case KargoServiceCreateStageProcedure:
-			kargoServiceCreateStageHandler.ServeHTTP(w, r)
 		case KargoServiceListStagesProcedure:
 			kargoServiceListStagesHandler.ServeHTTP(w, r)
 		case KargoServiceGetStageProcedure:
@@ -871,8 +827,6 @@ func NewKargoServiceHandler(svc KargoServiceHandler, opts ...connect.HandlerOpti
 			kargoServiceGetPromotionHandler.ServeHTTP(w, r)
 		case KargoServiceWatchPromotionProcedure:
 			kargoServiceWatchPromotionHandler.ServeHTTP(w, r)
-		case KargoServiceCreateProjectProcedure:
-			kargoServiceCreateProjectHandler.ServeHTTP(w, r)
 		case KargoServiceListProjectsProcedure:
 			kargoServiceListProjectsHandler.ServeHTTP(w, r)
 		case KargoServiceDeleteProjectProcedure:
@@ -942,10 +896,6 @@ func (UnimplementedKargoServiceHandler) DeleteResource(context.Context, *connect
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("akuity.io.kargo.service.v1alpha1.KargoService.DeleteResource is not implemented"))
 }
 
-func (UnimplementedKargoServiceHandler) CreateStage(context.Context, *connect.Request[v1alpha1.CreateStageRequest]) (*connect.Response[v1alpha1.CreateStageResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("akuity.io.kargo.service.v1alpha1.KargoService.CreateStage is not implemented"))
-}
-
 func (UnimplementedKargoServiceHandler) ListStages(context.Context, *connect.Request[v1alpha1.ListStagesRequest]) (*connect.Response[v1alpha1.ListStagesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("akuity.io.kargo.service.v1alpha1.KargoService.ListStages is not implemented"))
 }
@@ -992,10 +942,6 @@ func (UnimplementedKargoServiceHandler) GetPromotion(context.Context, *connect.R
 
 func (UnimplementedKargoServiceHandler) WatchPromotion(context.Context, *connect.Request[v1alpha1.WatchPromotionRequest], *connect.ServerStream[v1alpha1.WatchPromotionResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("akuity.io.kargo.service.v1alpha1.KargoService.WatchPromotion is not implemented"))
-}
-
-func (UnimplementedKargoServiceHandler) CreateProject(context.Context, *connect.Request[v1alpha1.CreateProjectRequest]) (*connect.Response[v1alpha1.CreateProjectResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("akuity.io.kargo.service.v1alpha1.KargoService.CreateProject is not implemented"))
 }
 
 func (UnimplementedKargoServiceHandler) ListProjects(context.Context, *connect.Request[v1alpha1.ListProjectsRequest]) (*connect.Response[v1alpha1.ListProjectsResponse], error) {
